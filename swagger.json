@@ -2,16 +2,9 @@
     "swagger": 2.0,
     "info": {
         "version": "2.1",
-        "description": "The Stores API allows custom and commercial application developers to perform CRUD operations on Bigcommerce stores.  For this sample, you can use the api key \"special-key\" to test the authorization filters",
-        "title": "Stores API",
-        "termsOfService": "http://none.com",
-        "contact": {
-            "name": "support.bigcommerce.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        }
+        "description": "Under construction",
+        "title": "Stores API"
+
     },
     "host": "api.bigcommerce.com",
     "basePath": "/stores/{store_hash}/v2",
@@ -19,7 +12,7 @@
         "https"
     ],
     "definitions": {
-        "post": {
+        "postReturned": {
             "required": [
                 "title",
                 "body"
@@ -37,7 +30,7 @@
                 },
                 "url": {
                     "type": "string",
-                    "description": "Provides the option to set a custom URI for the blog post. If no value, Bigcommerce will automatically generate a URI based on the title."
+                    "description": "Provides the option to set a custom context path for the blog post. If no value, Bigcommerce will use the title as the context path."
                 },
                 "preview_url": {
                     "type": "string",
@@ -54,13 +47,17 @@
                     },
                     "description": "An array containing any tags assigned to the blog post."
                 },
+                "summary": {
+                    "type": "string",
+                    "description": "READ- ONLY. The first 312 characters of the body text with a hyperlinked ellipsis."
+                },
                 "is_published": {
                     "type": "boolean",
                     "description": "A boolean value indicating whether or not the blog post has been published. If true, the blog post has been published. If false, it remains in draft state /(default/)."
                 },
                 "published_date": {
                     "type": "date-time",
-                    "description": "The time and date on which the blog post was published."
+                    "description": "The time and date on which the blog post was published in RFC-2822 format."
                 },
                 "meta_description": {
                     "type": "string",
@@ -80,7 +77,77 @@
                 },
                 "thumbnail_path": {
                     "type": "string",
-                    "description": "The path to the thumbnail image"
+                    "description": "The path to the thumbnail image."
+                }
+            }
+        },
+        "postSent": {
+            "required": [
+                "title",
+                "body"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "The title of the blog post"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "Provides the option to set a custom context path for the blog post. If no value, Bigcommerce will use the title as the context path."
+                },
+                "body": {
+                    "type": "string",
+                    "description": "The text of the blog post."
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "An array containing any tags assigned to the blog post."
+                },
+                "is_published": {
+                    "type": "boolean",
+                    "description": "A boolean value indicating whether or not the blog post has been published. If true, the blog post has been published. If false, it remains in draft state /(default/)."
+                },
+                "published_date": {
+                    "type": "date-time",
+                    "description": "The time and date on which the blog post was published in RFC-2822 format."
+                },
+                "meta_description": {
+                    "type": "string",
+                    "description": "The meta description of the blog post."
+                },
+                "meta_keywords": {
+                    "type": "string",
+                    "description": "Any meta keywords assigned to the blog posts, separated by commas."
+                },
+                "author": {
+                    "type": "string",
+                    "description": "The name of the user that authored the post."
+                },
+                "author_url": {
+                    "type": "string",
+                    "description": "The URI associated with the author."
+                },
+                "thumbnail_path": {
+                    "type": "string",
+                    "description": "The path to the thumbnail image."
+                }
+            }
+        },
+        "tags": {
+            "properties": {
+                "tag": {
+                    "type": "string",
+                    "description": "The text of the tag."
+                },
+                "post_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The ID/(s/) of the posts in which the tags appear."
                 }
             }
         },
@@ -208,7 +275,7 @@
                 ],
                 "summary": "List blog posts associated with the store",
                 "description": "",
-                "operationId": "getBlogPosts",
+                "operationId": "getPosts",
                 "consumes": [
                     "application/json",
                     "application/xml"
@@ -271,7 +338,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/post"
+                                "$ref": "#/definitions/postReturned"
                             }
                         }
                     },
@@ -310,13 +377,16 @@
                         "description": "Blog post object to add to the store.",
                         "required": false,
                         "schema": {
-                            "$ref": "#/definitions/post"
+                            "$ref": "#/definitions/postSent"
                         }
                     }
                 ],
                 "responses": {
+                    "201": {
+                        "description": "Returned to indicate success."
+                    },
                     "400": {
-                        "description": "Returned if you provide a value for id or preview_url. These are read-only values."
+                        "description": "Returned if you provide a value for summary, id, or preview_url. These are read-only values."
                     }
                     
                 },
@@ -328,90 +398,101 @@
                         ]
                     }
                 }
-            }
-        },
-        "/pet/findByStatus": {
-            "get": {
+            },
+            "delete": {
                 "tags": [
-                    "pet"
+                    "blog"
                 ],
-                "summary": "Finds Pets by status",
-                "description": "Multiple status values can be provided with comma seperated strings",
-                "operationId": "findPetsByStatus",
+                "summary": "Delete all blog posts associated with the store",
+                "description": "",
+                "operationId": "deleteBlogPosts",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
                 "produces": [
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "status",
-                        "description": "Status values that need to be considered for filter",
-                        "required": false,
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "default"
-                    }
-                ],
+                "parameters": [ ],
                 "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Pet"
-                            }
-                        }
+                    "204": {
+                        "description": "Returned if the operation succeeded."
                     },
                     "400": {
-                        "description": "Invalid status value"
+                        "description": "Returned if you include an unsupported query parameter."
                     }
                 },
                 "security": {
                     "petstore_auth": {
                         "scopes": [
-                            "write:pets",
-                            "read:pets"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
             }
         },
-        "/pet/findByTags": {
+        "/posts/{id}": {
             "get": {
                 "tags": [
-                    "pet"
+                    "blog"
                 ],
-                "summary": "Finds Pets by tags",
-                "description": "Muliple tags can be provided with comma seperated strings. Use tag1, tag2, tag3 for testing.",
-                "operationId": "findPetsByTags",
+                "summary": "Retrieve a single blog post",
+                "description": "",
+                "operationId": "getPost",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/postReturned"
+                        }
+                    },
+                    "401": {
+                        "description": "You did not include Content-Type in the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "blog"
+                ],
+                "summary": "Modify writeable values in existing blog post",
+                "description": "",
+                "operationId": "modifyPost",
                 "produces": [
                     "application/json",
                     "application/xml"
                 ],
                 "parameters": [
                     {
-                        "in": "query",
-                        "name": "tags",
-                        "description": "Tags to filter by",
+                        "in": "body",
+                        "name": "body",
+                        "description": "Blog post object containing the values to modify.",
                         "required": false,
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "collectionFormat": "default"
-                    }
+                        "schema": {
+                            "$ref": "#/definitions/postSent"
+                        }
+                    }                    
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Indicates success.",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Pet"
-                            }
+                            "$ref": "#/definitions/postReturned"
                         }
                     },
                     "400": {
@@ -421,8 +502,82 @@
                 "security": {
                     "petstore_auth": {
                         "scopes": [
-                            "write:pets",
-                            "read:pets"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "blog"
+                ],
+                "summary": "Delete a single blog post",
+                "description": "",
+                "operationId": "deletePost",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                  
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Indicates that the post was successfully deleted."
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            }            
+        },
+        "/tags": {
+            "get": {
+                "tags": [
+                    "blog"
+                ],
+                "summary": "List all blog tags associated with the store",
+                "description": "",
+                "operationId": "getTags",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+      
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Indicates success.",
+                        "schema": {
+                            "$ref": "#/definitions/tags"
+                        }
+                    },
+                    "204": {
+                        "description": "Returned if no blog tags exist."
+                    },
+                    "401": {
+                        "description": "OAuth token missing or incorrect."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
