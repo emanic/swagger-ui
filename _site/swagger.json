@@ -12,16 +12,12 @@
         "https"
     ],
     "definitions": {
-        "postReturned": {
-            "required": [
-                "title",
-                "body"
-            ],
+        "post-object-response": {
             "properties": {
                 "id": {
                     "type": "integer",
                     "format": "int64",
-                    "description": "READ-ONLY. A unique integer value assigned to each blog post.",
+                    "description": "The unique integer value assigned to the blog post",
                     "required": true
                 },
                 "title": {
@@ -30,58 +26,58 @@
                 },
                 "url": {
                     "type": "string",
-                    "description": "Provides the option to set a custom context path for the blog post. If no value, Bigcommerce will use the title as the context path."
+                    "description": "The title of the blog post"
                 },
                 "preview_url": {
                     "type": "string",
-                    "description": "READ ONLY. The URI of the preview of the blog post."
+                    "description": "The URI of the blog post preview"
                 },
                 "body": {
                     "type": "string",
-                    "description": "The text of the blog post."
+                    "description": "The text of the blog post"
                 },
                 "tags": {
                     "type": "array",
+                    "description": "An array containing any tags assigned to the blog post",
                     "items": {
                         "type": "string"
-                    },
-                    "description": "An array containing any tags assigned to the blog post."
+                    }
                 },
                 "summary": {
                     "type": "string",
-                    "description": "READ- ONLY. The first 312 characters of the body text with a hyperlinked ellipsis."
+                    "description": "The first 312 characters of the body"
                 },
                 "is_published": {
                     "type": "boolean",
-                    "description": "A boolean value indicating whether or not the blog post has been published. If true, the blog post has been published. If false, it remains in draft state /(default/)."
+                    "description": "A boolean value indicating whether or not the blog post has been published. If true, the blog post has been published. If false, it remains in draft state (default)"
                 },
                 "published_date": {
                     "type": "date-time",
-                    "description": "The time and date on which the blog post was published in RFC-2822 format."
+                    "description": "The time and date on which the blog post was published in RFC-2822 format"
                 },
                 "meta_description": {
                     "type": "string",
-                    "description": "The meta description of the blog post."
+                    "description": "The meta description of the blog post"
                 },
                 "meta_keywords": {
                     "type": "string",
-                    "description": "Any meta keywords assigned to the blog posts, separated by commas."
+                    "description": "Any meta keywords assigned to the blog posts, separated by commas"
                 },
                 "author": {
                     "type": "string",
-                    "description": "The name of the user that authored the post."
+                    "description": "The name of the user that authored the post"
                 },
                 "author_url": {
                     "type": "string",
-                    "description": "The URI associated with the author."
+                    "description": "The URI associated with the author"
                 },
                 "thumbnail_path": {
                     "type": "string",
-                    "description": "The path to the thumbnail image."
+                    "description": "The path to the thumbnail image"
                 }
             }
         },
-        "postSent": {
+        "post-object-request": {
             "required": [
                 "title",
                 "body"
@@ -93,46 +89,46 @@
                 },
                 "url": {
                     "type": "string",
-                    "description": "Provides the option to set a custom context path for the blog post. If no value, Bigcommerce will use the title as the context path."
+                    "description": "Provides the option to set a custom context path for the blog post. If no value, Bigcommerce will append the title to the base URI"
                 },
                 "body": {
                     "type": "string",
-                    "description": "The text of the blog post."
+                    "description": "The text of the blog post"
                 },
                 "tags": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
-                    "description": "An array containing any tags assigned to the blog post."
+                    "description": "An array containing any tags to be assigned to the blog post"
                 },
                 "is_published": {
                     "type": "boolean",
-                    "description": "A boolean value indicating whether or not the blog post has been published. If true, the blog post has been published. If false, it remains in draft state /(default/)."
+                    "description": "Set to true to publish the blog post. Set to false to place it in a draft state (default)"
                 },
                 "published_date": {
                     "type": "date-time",
-                    "description": "The time and date on which the blog post was published in RFC-2822 format."
+                    "description": "The time and date of publication in RFC-2822 format"
                 },
                 "meta_description": {
                     "type": "string",
-                    "description": "The meta description of the blog post."
+                    "description": "The meta description of the blog post"
                 },
                 "meta_keywords": {
                     "type": "string",
-                    "description": "Any meta keywords assigned to the blog posts, separated by commas."
+                    "description": "Any meta keywords assigned to the blog posts, separated by commas"
                 },
                 "author": {
                     "type": "string",
-                    "description": "The name of the user that authored the post."
+                    "description": "The name of the user that authored the post"
                 },
                 "author_url": {
                     "type": "string",
-                    "description": "The URI associated with the author."
+                    "description": "The URI associated with the author"
                 },
                 "thumbnail_path": {
                     "type": "string",
-                    "description": "The path to the thumbnail image."
+                    "description": "The path to the thumbnail image"
                 }
             }
         },
@@ -140,7 +136,7 @@
             "properties": {
                 "tag": {
                     "type": "string",
-                    "description": "The text of the tag."
+                    "description": "The text of the tag"
                 },
                 "post_ids": {
                     "type": "array",
@@ -268,13 +264,13 @@
         }
     },
     "paths": {
-        "/posts": {
+        "/blog/posts": {
             "get": {
                 "tags": [
                     "blog"
                 ],
                 "summary": "List blog posts associated with the store",
-                "description": "",
+                "description": "Returns an array containing either all of the blog posts associated with the store (up to 250) or just those blog posts matching your query parameters.",
                 "operationId": "getPosts",
                 "consumes": [
                     "application/json",
@@ -334,11 +330,11 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Blog post object/(s/)",
+                        "description": "Blog post object(s)",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/postReturned"
+                                "$ref": "#/definitions/post-object-response"
                             }
                         }
                     },
@@ -360,7 +356,7 @@
                     "blog"
                 ],
                 "summary": "Create a blog post",
-                "description": "",
+                "description": "Allows you to create a new blog post.",
                 "operationId": "createBlogPost",
                 "consumes": [
                     "application/json",
@@ -377,16 +373,22 @@
                         "description": "Blog post object to add to the store.",
                         "required": false,
                         "schema": {
-                            "$ref": "#/definitions/postSent"
+                            "$ref": "#/definitions/post-object-request"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Returned to indicate success."
+                        "description": "Returned to indicate success.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/post-object-response"
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Returned if you provide a value for summary, id, or preview_url. These are read-only values."
+                        "description": "Returned if you provide a value for <b>summary</b>, <b>id</b>, or <b>preview_url</b>. These are read-only values."
                     }
                     
                 },
@@ -404,7 +406,7 @@
                     "blog"
                 ],
                 "summary": "Delete all blog posts associated with the store",
-                "description": "",
+                "description": "This operation deletes all of the blog posts in the store. Use with caution.",
                 "operationId": "deleteBlogPosts",
                 "consumes": [
                     "application/json",
@@ -433,13 +435,13 @@
                 }
             }
         },
-        "/posts/{id}": {
+        "/blog/posts/{id}": {
             "get": {
                 "tags": [
                     "blog"
                 ],
                 "summary": "Retrieve a single blog post",
-                "description": "",
+                "description": "Returns the blog post that matches the id provided in the path.",
                 "operationId": "getPost",
                 "produces": [
                     "application/json",
@@ -450,7 +452,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                                "$ref": "#/definitions/postReturned"
+                                "$ref": "#/definitions/post-object-response"
                         }
                     },
                     "401": {
@@ -471,7 +473,7 @@
                     "blog"
                 ],
                 "summary": "Modify writeable values in existing blog post",
-                "description": "",
+                "description": "Allows you to modify any of the writeable values of an existing blog post.",
                 "operationId": "modifyPost",
                 "produces": [
                     "application/json",
@@ -484,7 +486,7 @@
                         "description": "Blog post object containing the values to modify.",
                         "required": false,
                         "schema": {
-                            "$ref": "#/definitions/postSent"
+                            "$ref": "#/definitions/post-object-request"
                         }
                     }                    
                 ],
@@ -492,11 +494,11 @@
                     "200": {
                         "description": "Indicates success.",
                         "schema": {
-                            "$ref": "#/definitions/postReturned"
+                            "$ref": "#/definitions/post-object-response"
                         }
                     },
                     "400": {
-                        "description": "Invalid tag value"
+                        "description": "Returned if you provide a value for <b>summary</b>, <b>id</b>, or <b>preview_url</b>. These are read-only values."
                     }
                 },
                 "security": {
@@ -513,7 +515,7 @@
                     "blog"
                 ],
                 "summary": "Delete a single blog post",
-                "description": "",
+                "description": "Deletes the blog post that matches the id sent in the path.",
                 "operationId": "deletePost",
                 "produces": [
                     "application/json",
@@ -540,13 +542,13 @@
                 }
             }            
         },
-        "/tags": {
+        "/blog/tags": {
             "get": {
                 "tags": [
                     "blog"
                 ],
                 "summary": "List all blog tags associated with the store",
-                "description": "",
+                "description": "Retrieves an array of all of the blog tags associated with the store, along with the id(s) of the blog posts that contain the tag.",
                 "operationId": "getTags",
                 "consumes": [
                     "application/json",
@@ -583,40 +585,141 @@
                 }
             }
         },
-        "/pet/{petId}": {
+        "/customers": {
             "get": {
                 "tags": [
-                    "pet"
+                    "customers"
                 ],
-                "summary": "Find pet by ID",
-                "description": "Returns a pet when ID < 10.  ID > 10 or nonintegers will simulate API error conditions",
-                "operationId": "getPetById",
+                "summary": "List store customers",
+                "description": "Returns an array containing either all of the store's customer objects (up to 250) or the customer objects matching your query parameter(s).",
+                "operationId": "getCustomers",
                 "produces": [
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [
+               "parameters": [
                     {
-                        "in": "path",
-                        "name": "petId",
-                        "description": "ID of pet that needs to be fetched",
-                        "required": true,
+                        "in": "query",
+                        "name": "first_name",
+                        "description": "The customer's first name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "last_name",
+                        "description": "The customer's last name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "company",
+                        "description": "The name of the customer's company",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "email",
+                        "description": "The customer's email address",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "phone",
+                        "description": "The customer's phone number",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "store_credit",
+                        "description": "How much credit the customer has at the store",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_group_id",
+                        "description": "The group that the customer belongs to",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "min_id",
+                        "description": "??",
+                        "required": false,
                         "type": "integer",
-                        "format": "int64"
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "min_id",
+                        "description": "??",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "min_date_created",
+                        "description": "??",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "max_date_created",
+                        "description": "??",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "Use this parameter to decrease or increase the maximum number of customer objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "???.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "successful operation",
+                        "description": "Blog post object(s)",
                         "schema": {
-                            "$ref": "#/definitions/Pet"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/post-object-response"
+                            }
                         }
                     },
-                    "400": {
-                        "description": "Invalid ID supplied"
-                    },
-                    "404": {
-                        "description": "Pet not found"
+                    "401": {
+                        "description": "OAuth token missing or incorrect."
                     }
                 },
                 "security": {
