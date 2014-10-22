@@ -13,6 +13,22 @@
     ],
     "definitions": {
         "post-object-response": {
+        "required": [
+            "id",
+            "title",
+            "url",
+            "preview_url",
+            "body",
+            "tags",
+            "summary",
+            "is_published",
+            "published_date",
+            "meta_description",
+            "meta_keywords",
+            "author",
+            "author_url",
+            "thumbnail_path"
+        ],
             "properties": {
                 "id": {
                     "type": "integer",
@@ -104,7 +120,7 @@
                 },
                 "is_published": {
                     "type": "boolean",
-                    "description": "Set to true to publish the blog post. Set to false to place it in a draft state (default)"
+                    "description": "Set to <b>true</b> to publish the blog post. Set to <b>false</b> to place it in a draft state (default)"
                 },
                 "published_date": {
                     "type": "date-time",
@@ -146,6 +162,157 @@
                     "description": "The ID/(s/) of the posts in which the tags appear."
                 }
             }
+        },
+        "customer-object-response": {
+            "required": [
+                "id",
+                "company",
+                "first_name",
+                "last_name",
+                "email",
+                "phone",
+                "date_created",
+                "date_modified",
+                "store_credit",
+                "registration_ip_address",
+                "customer_group_id",
+                "notes",
+                "addresses"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The unique integer value assigned to the customer"
+                },
+                "company": {
+                    "type": "string",
+                    "description": "The name of the customer's company"
+                },
+                "first_name": {
+                    "type": "string",
+                    "description": "The customer's first name"
+                },
+                "last_name": {
+                    "type": "string",
+                    "description": "The customer's last name"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "The customer's email address"
+                },
+                "phone": {
+                    "type": "string",
+                    "description": "The customer's phone number"
+                },
+                "date_created": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "When the customer record was created"
+                },
+                "date_modified": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time and date of the last customer record modification"
+                },
+                "store_credit": {
+                    "type": "float",
+                    "description": "The amount of credit the customer has with the store"
+                },
+                "registration_ip_address": {
+                    "type": "string",
+                    "description": "The IP address of the customer at the time of registration"
+                },
+                "customer_group_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "The ID of the group the customer belongs to"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Any notes about the customer"
+                },
+                "addresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "url": {
+                                "type": "string",
+                                "description": ""
+                            },
+                            "resource": {
+                                "type": "string",
+                                "description": ""
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "customer-object-request": {
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "email"
+                ],
+                "properties": {
+                    "company": {
+                        "type": "string",
+                        "description": "The customer's company"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "description": "The first name of the customer"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "description": "The last name of the customer"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "The customer's email address. Must be unique within the store."
+                    },
+                    "phone": { 
+                        "type": "string",
+                        "description": "The customer's phone number"
+                    },
+                    "store_credit": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "The amount of credit the customer has with the store"
+                    },
+                    "registration_ip_address": {
+                        "type": "string",
+                        "description": "The customer's IP address"
+                    },
+                    "customer_group_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The ID of the group the customer belongs to"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "description": "Any notes about the customer"
+                    },
+                    "_authentication": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "password": {
+                                    "type": "string",
+                                    "description": "Use this to set the customer's password. If not provided, Bigcommerce will automatically create a password."
+                                },
+                                "password_confirmation": {
+                                    "type": "string",
+                                    "description": "Type the password again, to confirm."
+                                }
+                            }
+                        }
+                    }
+
+                }
         },
         "User": {
             "properties": {
@@ -284,30 +451,31 @@
                     {
                         "in": "query",
                         "name": "is_published",
-                        "description": "Post in published or draft status",
+                        "description": "To obtain only posts that are in a published status, set to <b>true</b>. To obtain only posts that are in draft status, set to <b>false</b>.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "url",
-                        "description": "Post matching a specific URI",
+                        "description": "To obtain posts based on URI",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "tag",
-                        "description": "Posts matching tag",
+                        "description": "To obtain posts that have a specific tag",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "published_date",
-                        "description": "Posts published on a specific date",
+                        "description": "To obtain posts published on a specific date",
                         "required": false,
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time"
                     },
                     {
                         "in": "query",
@@ -320,7 +488,7 @@
                     {
                         "in": "query",
                         "name": "limit",
-                        "description": "Use this parameter to decrease or increase the maximum number of posts returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
+                        "description": "To decrease or increase the maximum number of posts returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -601,56 +769,58 @@
                     {
                         "in": "query",
                         "name": "first_name",
-                        "description": "The customer's first name",
+                        "description": "To retrieve customers with the specified first name",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "last_name",
-                        "description": "The customer's last name",
+                        "description": "To retrieve customers with the specified last name",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "company",
-                        "description": "The name of the customer's company",
+                        "description": "To retrieve customers who work for the specified company",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "email",
-                        "description": "The customer's email address",
+                        "description": "To retrieve customers with the specified email address",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "phone",
-                        "description": "The customer's phone number",
+                        "description": "To retrieve customers with a specified phone number",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "store_credit",
-                        "description": "How much credit the customer has at the store",
+                        "description": "To retrieve customers with the specified amount of store credit",
                         "required": false,
-                        "type": "string"
+                        "type": "number",
+                        "format": "float"
                     },
                     {
                         "in": "query",
                         "name": "customer_group_id",
-                        "description": "The group that the customer belongs to",
+                        "description": "To retrieve customers belonging to the specfied group",
                         "required": false,
-                        "type": "string"
+                        "type": "integer",
+                        "format": "int64"
                     },
                     {
                         "in": "query",
                         "name": "min_id",
-                        "description": "??",
+                        "description": "To retrieve only customer records with ID values greater than the specified value",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -659,8 +829,8 @@
                     },
                     {
                         "in": "query",
-                        "name": "min_id",
-                        "description": "??",
+                        "name": "max_id",
+                        "description": "To retrieve only customer records with ID values less than the specified value",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -670,27 +840,23 @@
                     {
                         "in": "query",
                         "name": "min_date_created",
-                        "description": "??",
+                        "description": "To retrieve customer records created after the specified date",
                         "required": false,
-                        "type": "integer",
-                        "format": "int64",
-                        "maximum": 250,
-                        "exclusiveMaximum": false
+                        "type": "string",
+                        "format": "date-time"
                     },
                     {
                         "in": "query",
                         "name": "max_date_created",
-                        "description": "??",
+                        "description": "To retrieve customer records created before the specified date",
                         "required": false,
-                        "type": "integer",
-                        "format": "int64",
-                        "maximum": 250,
-                        "exclusiveMaximum": false
+                        "type": "string",
+                        "format": "date-time"
                     },
                     {
                         "in": "query",
                         "name": "page",
-                        "description": "Use this parameter to decrease or increase the maximum number of customer objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
+                        "description": "???",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -700,7 +866,7 @@
                     {
                         "in": "query",
                         "name": "limit",
-                        "description": "???.",
+                        "description": "To decrease or increase the maximum number of customer objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -714,9 +880,12 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/post-object-response"
+                                "$ref": "#/definitions/customer-object-response"
                             }
                         }
+                    },
+                    "204": {
+                        "description": "No customer records exist."
                     },
                     "401": {
                         "description": "OAuth token missing or incorrect."
@@ -732,6 +901,59 @@
                     }
                 }
             },
+            "post": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Create a customer record",
+                "description": "Allows you to create a new customer record.",
+                "operationId": "createBlogPost",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Blog post object to add to the store.",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/customer-object-request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned to indicate success.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/customer-object-response"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Returned if you provide a value for <b>id</b>, <b>date_created</b>, <b>date_modified</b>, or <b>addresses</b>. These are read-only values. Also returned if the store already has a customer with the <b>email</b> address provided."
+                    }
+                    
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },      
+            
+            
+            
             "delete": {
                 "tags": [
                     "pet"
