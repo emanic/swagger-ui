@@ -453,6 +453,96 @@
                     }
                 }
         },
+        "custgrp-object-response": {
+                "required": [
+                    "id",
+                    "name",
+                    "is_default",
+                    "category_access",
+                    "discount_rules"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "The unique integer value assigned to the address object"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the customer group. Each customer group has a different name"
+                        },
+                    "is_default": {
+                        "type": "boolean",
+                        "description": "If <b>true</b>, new customers are assigned to this group by default. Defaults to <b>false</b>."
+                    },
+                    "category_access": {
+                        "type": "object", 
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "An enum specifying which product categories the customers in the group can access",
+                                "enum": [ "ALL", "SPECIFIC", "NONE" ]
+                            },
+                            "categories": {
+                                "type": "array",
+                                "description": "If the <b>type</b> enum value is SPECIFIC, this array includes the <b>id</b> values of the product categories the customers in this group can access",
+                                "items": {
+                                    "type": "string"
+                                }       
+                            }
+                        }
+                    },
+                    "discount_rules": {
+                        "type": "array",
+                        "description": "",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+        },
+        "custgrp-object-request": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "The unique integer value assigned to the address object"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the customer group. Each customer group has a different name"
+                        },
+                    "is_default": {
+                        "type": "boolean",
+                        "description": "Set to <b>true</b> to make this the default customer group, the one that all new customers will be assigned to by default. Any customer group already set to be the default will get switched to <b>false</b>, as only one customer group can be the default."
+                    },
+                    "category_access": {
+                        "type": "object", 
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "description": "An enum specifying which product categories the customers in the group can access",
+                                "enum": [ "ALL", "SPECIFIC", "NONE" ]
+                            },
+                            "categories": {
+                                "type": "array",
+                                "description": "If the <b>type</b> enum value is SPECIFIC, this array includes the <b>id</b> values of the product categories the customers in this group can access",
+                                "items": {
+                                    "type": "string"
+                                }       
+                            }
+                        }
+                    },
+                    "discount_rules": {
+                        "type": "array",
+                        "description": "",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+        },
         "User": {
             "properties": {
                 "id": {
@@ -1489,7 +1579,7 @@
                     "customers"
                 ],        
                 "summary": "Retrieve a single customer address",
-                "description": "Returns an individual customer address. Include the <b>id</b> value of the customer object in pthe part of the path before <b>addresses</b> and the <b>id</b> value of the address in the part of the path after <b>addresses</b>.",
+                "description": "Include the <b>id</b> value of the customer object in the part of the path before <b>addresses</b>. Include the <b>id</b> value of the customer address object in the part of the path after <b>addresses</b>.",
                 "operationId": "getCustomerAddresses",
                 "produces": [
                     "application/json",
@@ -1546,7 +1636,7 @@
                     "customers"
                 ],        
                 "summary": "Modify writeable values in a customer address",
-                "description": "Allows you to modify any or all of the writeable values in an existing customer address. Include the <b>id</b> value of the customer object in pthe part of the path before <b>addresses</b> and the <b>id</b> value of the address in the part of the path after <b>addresses</b>.",
+                "description": "Allows you to modify any or all of the writeable values in an existing customer address. Include the <b>id</b> value of the customer object in the part of the path before <b>addresses</b>. Include the <b>id</b> value of the customer address object in the part of the path after <b>addresses</b>.",
                 "operationId": "getCustomerAddresses",
                 "produces": [
                     "application/json",
@@ -1603,7 +1693,7 @@
                     "customers"
                 ],
                 "summary": "Delete one customer address",
-                "description": "Deletes one customer address. Include the <b>id</b> value of the customer object in pthe part of the path before <b>addresses</b> and the <b>id</b> value of the address in the part of the path after <b>addresses</b>.",
+                "description": "Include the <b>id</b> value of the customer object in the part of the path before <b>addresses</b>. Include the <b>id</b> value of the customer address object in the part of the path after <b>addresses</b>.",
                 "operationId": "deleteCustomerAddress",
                 "produces": [
                     "application/json",
@@ -1630,6 +1720,131 @@
                 }
             }        
         },
+        "/customer_groups": {
+            "get": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Retrieve all or some customer groups",
+                "description": "",
+                "operationId": "getCustomerGroups",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ 
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "Retrieve all customer groups with the specified name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "is_default",
+                        "description": "",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    }                
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custgrp-object-response"
+                        }
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Create a customer group",
+                "description": "",
+                "operationId": "createCustomerGroup",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ 
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Customer address object",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/custgrp-object-request"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custgrp-object-response"
+                        }
+                    },
+                    "400": {
+                        "description": "Another customer group already has the <b>name</b> value you supplied."
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            }
+        },
+
+        
         
         "/store/order": {
             "post": {
