@@ -314,6 +314,145 @@
 
                 }
         },
+        "custadd-object-response": {
+                "required": [
+                    "id",
+                    "customer_id",
+                    "first_name",
+                    "last_name",
+                    "company",
+                    "street_1",
+                    "street_2",
+                    "city",
+                    "state",
+                    "zip",
+                    "country",
+                    "country_iso2",
+                    "phone"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "The unique integer value assigned to the address object"
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "The unique integer value assigned to the enclosing customer object"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "description": "The first name of the addressee"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "description": "The last name of the addressee"
+                    },
+                    "company": { 
+                        "type": "string",
+                        "description": "The company of the addressee"
+                    },
+                    "streeet_1": {
+                        "type": "string",
+                        "description": "The first line of the street address"
+                    },
+                    "street_2": {
+                        "type": "string",
+                        "description": "The second line of the street address"
+                    },
+                    "city": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The city location"
+                    },
+                    "state": {
+                        "type": "string",
+                        "description": "The state location"
+                    },
+                    "zip": {
+                        "type": "string",
+                        "description": "The zip code of the location"
+                        },
+                    "country": {
+                        "type": "string",
+                        "description": "The country of the location"
+                    },
+                    "country_iso2": {
+                        "type": "string",
+                        "description": "The two character ISO 3166-1 alpha-2 country code"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "description": "The phone number associated with the addressee"
+                    },
+                    "address_type": {
+                        "type": "string",
+                        "description": "Whether the address is <b>commercial</b> or <b>residential</b> (default)."
+                    }
+                }
+        },
+        "custadd-object-request": {
+                "required": [
+                    "first_name",
+                    "last_name",
+                    "street_1",
+                    "city",
+                    "state",
+                    "zip",
+                    "country"
+                ],
+                "properties": {
+                    "customer_id": {
+                        "type": "string",
+                        "description": "The unique integer value of the customer object associated with this address object"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "description": "The first name of the addressee"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "description": "The last name of the addressee"
+                    },
+                    "company": { 
+                        "type": "string",
+                        "description": "The company of the addressee"
+                    },
+                    "streeet_1": {
+                        "type": "string",
+                        "description": "The first line of the street address"
+                    },
+                    "street_2": {
+                        "type": "string",
+                        "description": "The second line of the street address"
+                    },
+                    "city": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "The city location"
+                    },
+                    "state": {
+                        "type": "string",
+                        "description": "The state location"
+                    },
+                    "zip": {
+                        "type": "string",
+                        "description": "The zip code of the location"
+                        },
+                    "country": {
+                        "type": "string",
+                        "description": "The country of the location"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "description": "The phone number associated with the addressee"
+                    },
+
+                    "address_type": {
+                        "type": "string",
+                        "description": "Whether the address is <b>commercial</b> or <b>residential</b>. Defaults to <b>residential</b>."
+                    }
+                }
+        },
         "User": {
             "properties": {
                 "id": {
@@ -453,7 +592,7 @@
                         "name": "is_published",
                         "description": "To obtain only posts that are in a published status, set to <b>true</b>. To obtain only posts that are in draft status, set to <b>false</b>.",
                         "required": false,
-                        "type": "string"
+                        "type": "boolean"
                     },
                     {
                         "in": "query",
@@ -465,14 +604,14 @@
                     {
                         "in": "query",
                         "name": "tag",
-                        "description": "To obtain posts that have a specific tag",
+                        "description": "To obtain posts that have a specific tag. Not case sensitive.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "published_date",
-                        "description": "To obtain posts published on a specific date",
+                        "description": "To obtain posts published on a specific date.",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
@@ -556,7 +695,7 @@
                         }
                     },
                     "400": {
-                        "description": "Returned if you provide a value for <b>summary</b>, <b>id</b>, or <b>preview_url</b>. These are read-only values."
+                        "description": "Returned if you provide a value for <b>summary</b>, <b>id</b>, or <b>preview_url</b>: these are read-only values. Also returned if you fail to provide <b>title</b> or <b>body</b> values: these are required."
                     }
                     
                 },
@@ -590,7 +729,7 @@
                         "description": "Returned if the operation succeeded."
                     },
                     "400": {
-                        "description": "Returned if you include an unsupported query parameter."
+                        "description": "Returned if you include a parameter: none are supported."
                     }
                 },
                 "security": {
@@ -609,7 +748,7 @@
                     "blog"
                 ],
                 "summary": "Retrieve a single blog post",
-                "description": "Returns the blog post that matches the id provided in the path.",
+                "description": "Returns the blog post that matches the <b>id</b> value provided in the path.",
                 "operationId": "getPost",
                 "produces": [
                     "application/json",
@@ -623,8 +762,8 @@
                                 "$ref": "#/definitions/post-object-response"
                         }
                     },
-                    "401": {
-                        "description": "You did not include Content-Type in the HTTP Header."
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
                     }
                 },
                 "security": {
@@ -641,7 +780,7 @@
                     "blog"
                 ],
                 "summary": "Modify writeable values in existing blog post",
-                "description": "Allows you to modify any of the writeable values of an existing blog post.",
+                "description": "Allows you to modify any or all of the writeable values in an existing blog post.",
                 "operationId": "modifyPost",
                 "produces": [
                     "application/json",
@@ -683,7 +822,7 @@
                     "blog"
                 ],
                 "summary": "Delete a single blog post",
-                "description": "Deletes the blog post that matches the id sent in the path.",
+                "description": "Deletes the blog post that matches the <b>id</b> value sent in the path.",
                 "operationId": "deletePost",
                 "produces": [
                     "application/json",
@@ -769,42 +908,42 @@
                     {
                         "in": "query",
                         "name": "first_name",
-                        "description": "To retrieve customers with the specified first name",
+                        "description": "Retrieve customer records with the specified first name.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "last_name",
-                        "description": "To retrieve customers with the specified last name",
+                        "description": "Retrieve customers with the specified last name.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "company",
-                        "description": "To retrieve customers who work for the specified company",
+                        "description": "Retrieve customers who work for the specified company.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "email",
-                        "description": "To retrieve customers with the specified email address",
+                        "description": "Retrieve customers with the specified email address.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "phone",
-                        "description": "To retrieve customers with a specified phone number",
+                        "description": "Retrieve customers with a specified phone number.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "store_credit",
-                        "description": "To retrieve customers with the specified amount of store credit",
+                        "description": "Retrieve customers with the specified amount of store credit.",
                         "required": false,
                         "type": "number",
                         "format": "float"
@@ -812,7 +951,7 @@
                     {
                         "in": "query",
                         "name": "customer_group_id",
-                        "description": "To retrieve customers belonging to the specfied group",
+                        "description": "Retrieve customers belonging to the specfied group.",
                         "required": false,
                         "type": "integer",
                         "format": "int64"
@@ -820,7 +959,7 @@
                     {
                         "in": "query",
                         "name": "min_id",
-                        "description": "To retrieve only customer records with ID values greater than the specified value",
+                        "description": "Retrieve customer records with <b>id</b> values greater than or equal to the specified value.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -830,7 +969,7 @@
                     {
                         "in": "query",
                         "name": "max_id",
-                        "description": "To retrieve only customer records with ID values less than the specified value",
+                        "description": "Retrieve customer records with <b>id</b> values less than or equal to the specified value.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -840,7 +979,7 @@
                     {
                         "in": "query",
                         "name": "min_date_created",
-                        "description": "To retrieve customer records created after the specified date",
+                        "description": "Retrieve customer records created after or on the specified date, in RFC-2822 format.",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
@@ -848,7 +987,7 @@
                     {
                         "in": "query",
                         "name": "max_date_created",
-                        "description": "To retrieve customer records created before the specified date",
+                        "description": "Retrieve customer records created before or on the specified date, using RFC-2822 format.",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
@@ -866,7 +1005,7 @@
                     {
                         "in": "query",
                         "name": "limit",
-                        "description": "To decrease or increase the maximum number of customer objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
+                        "description": "Decrease or increase the maximum number of customer objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -907,7 +1046,7 @@
                 ],
                 "summary": "Create a customer record",
                 "description": "Allows you to create a new customer record.",
-                "operationId": "createBlogPost",
+                "operationId": "createCustomer",
                 "consumes": [
                     "application/json",
                     "application/xml"
@@ -951,36 +1090,138 @@
                     }
                 }
             },      
-            
-            
-            
+
+               
             "delete": {
                 "tags": [
-                    "pet"
+                    "customers"
                 ],
-                "summary": "Deletes a pet",
-                "description": "",
-                "operationId": "deletePet",
+                "summary": "Delete one or more store customers",
+                "description": "Use this method to delete all customers in the store or a group of customers matching your query parameters. You may also find this method useful for deleting a single customer record using one or more query parameters instead of the customer's <b>id</b> value.",
+                "operationId": "deleteCustomers",
                 "produces": [
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [
+               "parameters": [
                     {
-                        "in": "path",
-                        "name": "petId",
-                        "description": "Pet id to delete",
-                        "required": true,
+                        "in": "query",
+                        "name": "first_name",
+                        "description": "Delete all customers with the specified first name.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "last_name",
+                        "description": "Delete all customers with the specified last name.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "company",
+                        "description": "Delete all customers that work for the specified company.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "email",
+                        "description": "Delete a customer with a specified email address.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "phone",
+                        "description": "Delete the customer record(s) with the specified phone number.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "store_credit",
+                        "description": "Delete all customers with a specified amount of store credit.",
+                        "required": false,
+                        "type": "number",
+                        "format": "float"
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_group_id",
+                        "description": "Delete all of the customer records with a specified <b>customer_group_id</b> value.",
+                        "required": false,
                         "type": "integer",
                         "format": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "min_id",
+                        "description": "Delete customer records with <b>id</b> values greater than or equal to the specified value.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "max_id",
+                        "description": "Delete customer records with <b>id</b> values less than or equal to the specified value.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "min_date_created",
+                        "description": "Delete customer records created after or on the specified date (RFC-2822 format).",
+                        "required": false,
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    {
+                        "in": "query",
+                        "name": "max_date_created",
+                        "description": "Delete customer records created before or on the specified date (RFC-2822 format).",
+                        "required": false,
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
                     }
                 ],
                 "responses": {
-                    "400": {
-                        "description": "Invalid pet value"
+                      "204": {
+                        "description": "Indicates success."
+                    },
+                    "401": {
+                        "description": "OAuth token missing or incorrect."
                     }
                 },
                 "security": {
+                    "api_key": {},
                     "petstore_auth": {
                         "scopes": [
                             "write:pets",
@@ -989,7 +1230,407 @@
                     }
                 }
             }
+            
         },
+        "/customers/{id}": {
+            "get": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Retrieve a single customer record",
+                "description": "Returns the customer record that has the same <b>id</b> value provided in the path.",
+                "operationId": "getPost",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/customer-object-response"
+                        }
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Modify writeable values in a customer record",
+                "description": "Allows you to modify any or all of the writeable values in a customer record.",
+                "operationId": "modifyCustomer",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Customer record object containing the values to be modified.",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/customer-object-request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returned to indicate success.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/customer-object-response"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Returned if you provide a value for <b>id</b>, <b>date_created</b>, <b>date_modified</b>, or <b>addresses</b>. These are read-only values."
+                    }
+                    
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Delete a single customer record",
+                "description": "Deletes the customer record that matches the <b>id</b> value sent in the path.",
+                "operationId": "deleteCustomer",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                  
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Indicates that the customer was successfully deleted."
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            }            
+
+
+        },
+        "/customers/{id}/addresses": {
+            "get": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Retrieve all of the addresses associated with a customer",
+                "description": "Returns an array containing all of addresses associated with a specific customer record. Include the <b>id</b> value of the customer object in the path.",
+                "operationId": "getCustomerAddresses",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ 
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    }                
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custadd-object-response"
+                        }
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+        
+            "post": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Create a customer address",
+                "description": "Create a customer address object and optionally link it to an associated customer object by including the <b>id</b> of the customer object.",
+                "operationId": "createCustomerAddress",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Customer address object",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/custadd-object-request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custadd-object-response"
+                        }
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Delete all of the addresses associated with a customer",
+                "description": "Deletes all of customer addresses associated with the customer. Include the <b>id</b> value of the customer object in the path.",
+                "operationId": "deleteCustomerAddresses",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                  
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Indicates that the customer addresses were successfully deleted."
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            }        
+        },
+
+        "/customers/{id}/addresses/{id}": {
+            "get": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Retrieve a single customer address",
+                "description": "Returns an individual customer address. Include the <b>id</b> value of the customer object in pthe part of the path before <b>addresses</b> and the <b>id</b> value of the address in the part of the path after <b>addresses</b>.",
+                "operationId": "getCustomerAddresses",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ 
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    }                
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custadd-object-response"
+                        }
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Modify writeable values in a customer address",
+                "description": "Allows you to modify any or all of the writeable values in an existing customer address. Include the <b>id</b> value of the customer object in pthe part of the path before <b>addresses</b> and the <b>id</b> value of the address in the part of the path after <b>addresses</b>.",
+                "operationId": "getCustomerAddresses",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ 
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    }                
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custadd-object-response"
+                        }
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Delete one customer address",
+                "description": "Deletes one customer address. Include the <b>id</b> value of the customer object in pthe part of the path before <b>addresses</b> and the <b>id</b> value of the address in the part of the path after <b>addresses</b>.",
+                "operationId": "deleteCustomerAddress",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                  
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Indicates that the customer address was successfully deleted."
+                    },
+                    "400": {
+                        "description": "Invalid tag value"
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            }        
+        },
+        
         "/store/order": {
             "post": {
                 "tags": [
