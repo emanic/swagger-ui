@@ -4,9 +4,10 @@
         "version": "2.1",
         "description": "Under construction",
         "title": "Stores API"
+
     },
     "host": "api.bigcommerce.com",
-    "basePath": "/stores/cl1xfm/v2",
+    "basePath": "/stores/{store_hash}/v2",
     "schemes": [
         "https"
     ],
@@ -64,7 +65,7 @@
                 },
                 "is_published": {
                     "type": "boolean",
-                    "description": "A boolean value indicating whether or not the blog post has been published. If <b>true</b>, the blog post has been published. If <b>false</b>, it remains in draft state (default)"
+                    "description": "A boolean value indicating whether or not the blog post has been published. If true, the blog post has been published. If false, it remains in draft state (default)"
                 },
                 "published_date": {
                     "type": "date-time",
@@ -207,12 +208,12 @@
                 "date_created": {
                     "type": "string",
                     "format": "date-time",
-                    "description": "When the customer object was created"
+                    "description": "When the customer record was created"
                 },
                 "date_modified": {
                     "type": "string",
                     "format": "date-time",
-                    "description": "The time and date of the last customer object modification"
+                    "description": "The time and date of the last customer record modification"
                 },
                 "store_credit": {
                     "type": "float",
@@ -270,7 +271,7 @@
                     },
                     "email": {
                         "type": "string",
-                        "description": "The customer's email address. Must be unique within the store"
+                        "description": "The customer's email address. Must be unique within the store."
                     },
                     "phone": { 
                         "type": "string",
@@ -385,7 +386,7 @@
                     },
                     "address_type": {
                         "type": "string",
-                        "description": "Whether the address is <b>commercial</b> or <b>residential</b> (default)"
+                        "description": "Whether the address is <b>commercial</b> or <b>residential</b> (default)."
                     }
                 }
         },
@@ -448,7 +449,7 @@
 
                     "address_type": {
                         "type": "string",
-                        "description": "Whether the address is <b>commercial</b> or <b>residential</b>. Defaults to <b>residential</b>"
+                        "description": "Whether the address is <b>commercial</b> or <b>residential</b>. Defaults to <b>residential</b>."
                     }
                 }
         },
@@ -463,7 +464,7 @@
                 "properties": {
                     "id": {
                         "type": "number",
-                        "description": "The unique integer value assigned to the customer group object"
+                        "description": "The unique integer value assigned to the address object"
                     },
                     "name": {
                         "type": "string",
@@ -471,7 +472,7 @@
                         },
                     "is_default": {
                         "type": "boolean",
-                        "description": "If <b>true</b>, new customers are assigned to this group by default. Defaults to <b>false</b>"
+                        "description": "If <b>true</b>, new customers are assigned to this group by default. Defaults to <b>false</b>."
                     },
                     "category_access": {
                         "type": "object", 
@@ -506,7 +507,7 @@
                 "properties": {
                     "id": {
                         "type": "number",
-                        "description": "The unique integer value assigned to the customer group object"
+                        "description": "The unique integer value assigned to the address object"
                     },
                     "name": {
                         "type": "string",
@@ -514,7 +515,7 @@
                         },
                     "is_default": {
                         "type": "boolean",
-                        "description": "Set to <b>true</b> to make this the default customer group, the one that all new customers will be assigned to by default. Any customer group already set to be the default will get switched to <b>false</b>. Only one customer group can be the default"
+                        "description": "Set to <b>true</b> to make this the default customer group, the one that all new customers will be assigned to by default. Any customer group already set to be the default will get switched to <b>false</b>, as only one customer group can be the default."
                     },
                     "category_access": {
                         "type": "object", 
@@ -541,6 +542,121 @@
                         }
                     }
                 }
+        },
+        "User": {
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "userStatus": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "User Status"
+                }
+            }
+        },
+        "Category": {
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "Pet": {
+            "enum": [
+                "name",
+                "photoUrls"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "category": {
+                    "$ref": "Category"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "doggie"
+                },
+                "photoUrls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "Tag"
+                    }
+                },
+                "status": {
+                    "type": "string",
+                    "description": "pet status in the store"
+                }
+            }
+        },
+        "Tag": {
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "Order": {
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "petId": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "shipDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Order Status"
+                },
+                "complete": {
+                    "type": "boolean"
+                }
+            }
         }
     },
     "paths": {
@@ -550,7 +666,7 @@
                     "blog"
                 ],
                 "summary": "List blog posts associated with the store",
-                "description": "Returns an array containing either all of the blog post objects associated with the store (up to 250) or just those blog post objects matching your query parameters.",
+                "description": "Returns an array containing either all of the blog posts associated with the store (up to 250) or just those blog posts matching your query parameters.",
                 "operationId": "getPosts",
                 "consumes": [
                     "application/json",
@@ -564,14 +680,14 @@
                     {
                         "in": "query",
                         "name": "is_published",
-                        "description": "To obtain only published posts, set to <b>true</b>. To obtain only posts in draft status, set to <b>false</b>.",
+                        "description": "To obtain only posts that are in a published status, set to <b>true</b>. To obtain only posts that are in draft status, set to <b>false</b>.",
                         "required": false,
                         "type": "boolean"
                     },
                     {
                         "in": "query",
                         "name": "url",
-                        "description": "To obtain posts based on URI.",
+                        "description": "To obtain posts based on URI",
                         "required": false,
                         "type": "string"
                     },
@@ -592,8 +708,16 @@
                     },
                     {
                         "in": "query",
+                        "name": "page",
+                        "description": "Number of pages",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    {
+                        "in": "query",
                         "name": "limit",
-                        "description": "To decrease or increase the maximum number of blog post objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
+                        "description": "To decrease or increase the maximum number of posts returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -616,7 +740,7 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
                             "write:store_v2_content",
                             "read:store_v2_content_read_only"
@@ -652,7 +776,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "Indicates success.",
+                        "description": "Returned to indicate success.",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -661,12 +785,12 @@
                         }
                     },
                     "400": {
-                        "description": "Returned if you provide a value for read-only properties: <b>summary</b>, <b>id</b>, or <b>preview_url</b>. Also returned if you fail to provide required values: <b>title</b> or <b>body</b>."
+                        "description": "Returned if you provide a value for <b>summary</b>, <b>id</b>, or <b>preview_url</b>: these are read-only values. Also returned if you fail to provide <b>title</b> or <b>body</b> values: these are required."
                     }
                     
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
                             "write:store_v2_content",
                             "read:store_v2_content_read_only"
@@ -692,14 +816,14 @@
                 "parameters": [ ],
                 "responses": {
                     "204": {
-                        "description": "Indicates success."
+                        "description": "Returned if the operation succeeded."
                     },
                     "400": {
-                        "description": "Returned if you include a parameter. The method does not support any parameters."
+                        "description": "Returned if you include a parameter: none are supported."
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
                             "write:store_v2_content",
                             "read:store_v2_content_read_only"
@@ -733,7 +857,7 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
                             "write:store_v2_content",
                             "read:store_v2_content_read_only"
@@ -771,11 +895,11 @@
                         }
                     },
                     "400": {
-                        "description": "Returned if you provide a value for read-only properties: <b>summary</b>, <b>id</b>, or <b>preview_url</b>."
+                        "description": "Returned if you provide a value for <b>summary</b>, <b>id</b>, or <b>preview_url</b>. These are read-only values."
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
                             "write:store_v2_content",
                             "read:store_v2_content_read_only"
@@ -806,7 +930,7 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
                             "write:store_v2_content",
                             "read:store_v2_content_read_only"
@@ -849,7 +973,7 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
                             "write:store_v2_content",
                             "read:store_v2_content_read_only"
@@ -857,285 +981,6 @@
                     }
                 }
             }
-        },
-        "/customer_groups": {
-            "get": {
-                "tags": [
-                    "customers"
-                ],        
-                "summary": "Retrieve all or some customer groups",
-                "description": "Allows you to retrieve all customer groups or to retrieve a single customer group by <b>name</b> value or <b>is_default</b> value.",
-                "operationId": "getCustomerGroups",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "consumes": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [ 
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Retrieve the customer group with the specified name",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "is_default",
-                        "description": "To obtain the group that all new customers get assigned to by default, use <b>true</b>. To obtain only non-default customer groups, use <b>false</b>.",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
-                        "in": "query",
-                        "name": "limit",
-                        "description": "To decrease or increase the maximum number of customer group objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
-                        "required": false,
-                        "type": "integer",
-                        "format": "int64",
-                        "maximum": 250,
-                        "exclusiveMaximum": false
-                    }                
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                                "$ref": "#/definitions/custgrp-object-response"
-                        }
-                    },
-                    "406": {
-                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
-                    }
-                },
-                "security": {
-                    "stores_auth": {
-                        "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
-                        ]
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "customers"
-                ],        
-                "summary": "Create a customer group",
-                "description": "",
-                "operationId": "createCustomerGroup",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "consumes": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [ 
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Customer address object",
-                        "required": false,
-                        "schema": {
-                            "$ref": "#/definitions/custgrp-object-request"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                                "$ref": "#/definitions/custgrp-object-response"
-                        }
-                    },
-                    "400": {
-                        "description": "Another customer group already has the <b>name</b> value you supplied."
-                    },
-                    "406": {
-                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
-                    }
-                },
-                "security": {
-                    "stores_auth": {
-                        "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
-                        ]
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "customers"
-                ],        
-                "summary": "Delete one or more customer groups",
-                "description": "",
-                "operationId": "deleteCustomerGroups",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "consumes": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [ 
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Delete the customer group with the specified name",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "in": "query",
-                        "name": "is_default",
-                        "description": "To delete the group that all new customers get assigned to by default, use <b>true</b>. To delete all other customer groups, use <b>false</b>.",
-                        "required": false,
-                        "type": "boolean"
-                    },                    
-                    {
-                        "in": "query",
-                        "name": "limit",
-                        "description": "Decrease or increase the maximum number of customer groups deleted. By default, the method deletes no more than 50. You can increase the maximum up to 250.",
-                        "required": false,
-                        "type": "integer",
-                        "format": "int64",
-                        "maximum": 250,
-                        "exclusiveMaximum": false
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Indicates success"
-                    }
-                },
-                "security": {
-                    "stores_auth": {
-                        "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
-                        ]
-                    }
-                }
-            }            
-        },
-        "/customer_groups/{id}": {
-            "get": {
-                "tags": [
-                    "customers"
-                ],        
-                "summary": "Retrieve a single customer group",
-                "description": "Returns the customer group object that has the same <b>id</b> value provided in the path.",
-                "operationId": "getCustomerGroup",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [ ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                                "$ref": "#/definitions/custgrp-object-response"
-                        }
-                    },
-                    "406": {
-                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
-                    }
-                },
-                "security": {
-                    "stores_auth": {
-                        "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
-                        ]
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "customers"
-                ],
-                "summary": "Modify writeable values in a customer group",
-                "description": "Allows you to modify any or all of the writeable values in a customer group object.",
-                "operationId": "modifyCustomerGroup",
-                "consumes": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Customer group object containing the values to be modified.",
-                        "required": false,
-                        "schema": {
-                            "$ref": "#/definitions/custgrp-object-request"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Returned to indicate success.",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/custgrp-object-response"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Returned if you provide a value for read-only properties: <b>id</b>."
-                    }
-                    
-                },
-                "security": {
-                    "stores_auth": {
-                        "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
-                        ]
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "customers"
-                ],
-                "summary": "Delete a single customer group",
-                "description": "Deletes the customer group object that matches the <b>id</b> value sent in the path.",
-                "operationId": "deleteCustomerGroup",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [
-                  
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Indicates that the customer group was successfully deleted."
-                    }
-                },
-                "security": {
-                    "stores_auth": {
-                        "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
-                        ]
-                    }
-                }
-            }             
         },
         "/customers": {
             "get": {
@@ -1153,7 +998,7 @@
                     {
                         "in": "query",
                         "name": "first_name",
-                        "description": "Retrieve customer objects with the specified first name.",
+                        "description": "Retrieve customer records with the specified first name.",
                         "required": false,
                         "type": "string"
                     },
@@ -1204,7 +1049,7 @@
                     {
                         "in": "query",
                         "name": "min_id",
-                        "description": "Retrieve customer objects with <b>id</b> values greater than or equal to the specified value.",
+                        "description": "Retrieve customer records with <b>id</b> values greater than or equal to the specified value.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -1214,7 +1059,7 @@
                     {
                         "in": "query",
                         "name": "max_id",
-                        "description": "Retrieve customer objects with <b>id</b> values less than or equal to the specified value.",
+                        "description": "Retrieve customer records with <b>id</b> values less than or equal to the specified value.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -1224,7 +1069,7 @@
                     {
                         "in": "query",
                         "name": "min_date_created",
-                        "description": "Retrieve customer objects created after or on the specified date, in RFC-2822 format.",
+                        "description": "Retrieve customer records created after or on the specified date, in RFC-2822 format.",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
@@ -1232,10 +1077,20 @@
                     {
                         "in": "query",
                         "name": "max_date_created",
-                        "description": "Retrieve customer objects created before or on the specified date, using RFC-2822 format.",
+                        "description": "Retrieve customer records created before or on the specified date, using RFC-2822 format.",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
                     },
                     {
                         "in": "query",
@@ -1259,7 +1114,7 @@
                         }
                     },
                     "204": {
-                        "description": "No customer objects could be returned because none exist."
+                        "description": "No customer records exist."
                     },
                     "401": {
                         "description": "OAuth token missing or incorrect."
@@ -1267,10 +1122,10 @@
                 },
                 "security": {
                     "api_key": {},
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:pets",
+                            "read:pets"
                         ]
                     }
                 }
@@ -1279,8 +1134,8 @@
                 "tags": [
                     "customers"
                 ],
-                "summary": "Create a customer",
-                "description": "Allows you to create a new customer object.",
+                "summary": "Create a customer record",
+                "description": "Allows you to create a new customer record.",
                 "operationId": "createCustomer",
                 "consumes": [
                     "application/json",
@@ -1313,23 +1168,26 @@
                     },
                     "400": {
                         "description": "Returned if you provide a value for <b>id</b>, <b>date_created</b>, <b>date_modified</b>, or <b>addresses</b>. These are read-only values. Also returned if the store already has a customer with the <b>email</b> address provided."
-                    }    
+                    }
+                    
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
-            },  
+            },      
+
+               
             "delete": {
                 "tags": [
                     "customers"
                 ],
                 "summary": "Delete one or more store customers",
-                "description": "Use this method to delete all customers in the store or the customer(s) that match your query parameters.",
+                "description": "Use this method to delete all customers in the store or a group of customers matching your query parameters. You may also find this method useful for deleting a single customer record using one or more query parameters instead of the customer's <b>id</b> value.",
                 "operationId": "deleteCustomers",
                 "produces": [
                     "application/json",
@@ -1353,7 +1211,7 @@
                     {
                         "in": "query",
                         "name": "company",
-                        "description": "Delete all customers from a specific company.",
+                        "description": "Delete all customers that work for the specified company.",
                         "required": false,
                         "type": "string"
                     },
@@ -1367,14 +1225,14 @@
                     {
                         "in": "query",
                         "name": "phone",
-                        "description": "Delete the customer(s) with the specified phone number.",
+                        "description": "Delete the customer record(s) with the specified phone number.",
                         "required": false,
                         "type": "string"
                     },
                     {
                         "in": "query",
                         "name": "store_credit",
-                        "description": "Delete all customer objects with a specified amount of store credit.",
+                        "description": "Delete all customers with a specified amount of store credit.",
                         "required": false,
                         "type": "number",
                         "format": "float"
@@ -1382,7 +1240,7 @@
                     {
                         "in": "query",
                         "name": "customer_group_id",
-                        "description": "Delete all of the customer objects with a specified <b>customer_group_id</b> value.",
+                        "description": "Delete all of the customer records with a specified <b>customer_group_id</b> value.",
                         "required": false,
                         "type": "integer",
                         "format": "int64"
@@ -1390,7 +1248,7 @@
                     {
                         "in": "query",
                         "name": "min_id",
-                        "description": "Delete customer objects with <b>id</b> values greater than or equal to the specified value.",
+                        "description": "Delete customer records with <b>id</b> values greater than or equal to the specified value.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -1400,7 +1258,7 @@
                     {
                         "in": "query",
                         "name": "max_id",
-                        "description": "Delete customer objects with <b>id</b> values less than or equal to the specified value.",
+                        "description": "Delete customer records with <b>id</b> values less than or equal to the specified value.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -1410,7 +1268,7 @@
                     {
                         "in": "query",
                         "name": "min_date_created",
-                        "description": "Delete customer objects created after or on the specified date (RFC-2822 format).",
+                        "description": "Delete customer records created after or on the specified date (RFC-2822 format).",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
@@ -1418,15 +1276,25 @@
                     {
                         "in": "query",
                         "name": "max_date_created",
-                        "description": "Delete customer objects created before or on the specified date (RFC-2822 format).",
+                        "description": "Delete customer records created before or on the specified date (RFC-2822 format).",
                         "required": false,
                         "type": "string",
                         "format": "date-time"
                     },
                     {
                         "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
                         "name": "limit",
-                        "description": "Decrease or increase the maximum number of customer objects deleted. By default, the method deletes no more than 50. You can increase the maximum up to 250..",
+                        "description": "??????.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -1444,23 +1312,24 @@
                 },
                 "security": {
                     "api_key": {},
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:pets",
+                            "read:pets"
                         ]
                     }
                 }
-            }            
+            }
+            
         },
         "/customers/{id}": {
             "get": {
                 "tags": [
                     "customers"
                 ],        
-                "summary": "Retrieve a single customer",
-                "description": "Returns the customer object that has the same <b>id</b> value provided in the path.",
-                "operationId": "getCustomer",
+                "summary": "Retrieve a single customer record",
+                "description": "Returns the customer record that has the same <b>id</b> value provided in the path.",
+                "operationId": "getPost",
                 "produces": [
                     "application/json",
                     "application/xml"
@@ -1478,10 +1347,10 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
@@ -1490,8 +1359,8 @@
                 "tags": [
                     "customers"
                 ],
-                "summary": "Modify writeable values in a customer",
-                "description": "Allows you to modify any or all of the writeable values in a customer object.",
+                "summary": "Modify writeable values in a customer record",
+                "description": "Allows you to modify any or all of the writeable values in a customer record.",
                 "operationId": "modifyCustomer",
                 "consumes": [
                     "application/json",
@@ -1505,7 +1374,7 @@
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Customer object containing the values to be modified.",
+                        "description": "Customer record object containing the values to be modified.",
                         "required": false,
                         "schema": {
                             "$ref": "#/definitions/customer-object-request"
@@ -1523,15 +1392,15 @@
                         }
                     },
                     "400": {
-                        "description": "Returned if you provide a value for read-only properties: <b>id</b>, <b>date_created</b>, <b>date_modified</b>, or <b>addresses</b>."
+                        "description": "Returned if you provide a value for <b>id</b>, <b>date_created</b>, <b>date_modified</b>, or <b>addresses</b>. These are read-only values."
                     }
                     
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
@@ -1540,8 +1409,8 @@
                 "tags": [
                     "customers"
                 ],
-                "summary": "Delete a single customer",
-                "description": "Deletes the customer object that matches the <b>id</b> value sent in the path.",
+                "summary": "Delete a single customer record",
+                "description": "Deletes the customer record that matches the <b>id</b> value sent in the path.",
                 "operationId": "deleteCustomer",
                 "produces": [
                     "application/json",
@@ -1559,14 +1428,16 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
-            }
+            }            
+
+
         },
         "/customers/{id}/addresses": {
             "get": {
@@ -1574,7 +1445,7 @@
                     "customers"
                 ],        
                 "summary": "Retrieve all of the addresses associated with a customer",
-                "description": "Returns an array containing all of addresses associated with a specific customer object. Include the <b>id</b> value of the customer object in the path.",
+                "description": "Returns an array containing all of addresses associated with a specific customer record. Include the <b>id</b> value of the customer object in the path.",
                 "operationId": "getCustomerAddresses",
                 "produces": [
                     "application/json",
@@ -1587,8 +1458,18 @@
                 "parameters": [ 
                     {
                         "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
                         "name": "limit",
-                        "description": "To decrease or increase the maximum number of customer address objects returned. By default, the method returns no more than 50. You can increase the maximum up to 250.",
+                        "description": "??????.",
                         "required": false,
                         "type": "integer",
                         "format": "int64",
@@ -1608,10 +1489,10 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
@@ -1651,10 +1532,10 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
@@ -1682,10 +1563,10 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
@@ -1699,7 +1580,7 @@
                 ],        
                 "summary": "Retrieve a single customer address",
                 "description": "Include the <b>id</b> value of the customer object in the part of the path before <b>addresses</b>. Include the <b>id</b> value of the customer address object in the part of the path after <b>addresses</b>.",
-                "operationId": "getCustomerAddress",
+                "operationId": "getCustomerAddresses",
                 "produces": [
                     "application/json",
                     "application/xml"
@@ -1708,7 +1589,27 @@
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [        
+                "parameters": [ 
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    }                
                 ],
                 "responses": {
                     "200": {
@@ -1722,10 +1623,10 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
@@ -1736,7 +1637,7 @@
                 ],        
                 "summary": "Modify writeable values in a customer address",
                 "description": "Allows you to modify any or all of the writeable values in an existing customer address. Include the <b>id</b> value of the customer object in the part of the path before <b>addresses</b>. Include the <b>id</b> value of the customer address object in the part of the path after <b>addresses</b>.",
-                "operationId": "modifyCustomerAddress",
+                "operationId": "getCustomerAddresses",
                 "produces": [
                     "application/json",
                     "application/xml"
@@ -1745,7 +1646,27 @@
                     "application/json",
                     "application/xml"
                 ],
-                "parameters": [    
+                "parameters": [ 
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    }                
                 ],
                 "responses": {
                     "200": {
@@ -1759,10 +1680,10 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
@@ -1790,27 +1711,513 @@
                     }
                 },
                 "security": {
-                    "stores_auth": {
+                    "petstore_auth": {
                         "scopes": [
-                            "write:store_v2_customers",
-                            "read:store_v2_customers_read_only"
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
                         ]
                     }
                 }
             }        
+        },
+        "/customer_groups": {
+            "get": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Retrieve all or some customer groups",
+                "description": "",
+                "operationId": "getCustomerGroups",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ 
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "Retrieve all customer groups with the specified name",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "is_default",
+                        "description": "",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "description": "???",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "??????.",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 250,
+                        "exclusiveMaximum": false
+                    }                
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custgrp-object-response"
+                        }
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "customers"
+                ],        
+                "summary": "Create a customer group",
+                "description": "",
+                "operationId": "createCustomerGroup",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [ 
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Customer address object",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/custgrp-object-request"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                                "$ref": "#/definitions/custgrp-object-response"
+                        }
+                    },
+                    "400": {
+                        "description": "Another customer group already has the <b>name</b> value you supplied."
+                    },
+                    "406": {
+                        "description": "You specified an unsupported media type in the <b>Accept</b> field of the HTTP Header."
+                    }
+                },
+                "security": {
+                    "petstore_auth": {
+                        "scopes": [
+                            "write:store_v2_content",
+                            "read:store_v2_content_read_only"
+                        ]
+                    }
+                }
+            }
+        },
+
+        
+        
+        "/store/order": {
+            "post": {
+                "tags": [
+                    "store"
+                ],
+                "summary": "Place an order for a pet",
+                "description": "",
+                "operationId": "placeOrder",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "order placed for purchasing the pet",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Order"
+                    }
+                }
+            }
+        },
+        "/store/order/{orderId}": {
+            "get": {
+                "tags": [
+                    "store"
+                ],
+                "summary": "Find purchase order by ID",
+                "description": "For valid response try integer IDs with value <= 5 or > 10. Other values will generated exceptions",
+                "operationId": "getOrderById",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "orderId",
+                        "description": "ID of pet that needs to be fetched",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Order not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "store"
+                ],
+                "summary": "Delete purchase order by ID",
+                "description": "For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors",
+                "operationId": "deleteOrder",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "orderId",
+                        "description": "ID of the order that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Order not found"
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Create user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "createUser",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Created user object",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/user/createWithArray": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Creates list of users with given input array",
+                "description": "",
+                "operationId": "createUsersWithArrayInput",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "List of user object",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "User"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/user/createWithList": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Creates list of users with given input array",
+                "description": "",
+                "operationId": "createUsersWithListInput",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "List of user object",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Logs user into the system",
+                "description": "",
+                "operationId": "loginUser",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The user name for login",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login in clear text",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username/password supplied"
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Logs out current logged in user session",
+                "description": "",
+                "operationId": "logoutUser",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/user/{username}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get user by user name",
+                "description": "",
+                "operationId": "getUserByName",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "description": "The name that needs to be fetched. Use user1 for testing. ",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Updated user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "updateUser",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "description": "name that need to be deleted",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Updated user object",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid user supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Delete user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "deleteUser",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "username",
+                        "description": "The name that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Invalid username supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
         }
     },
-
     "securityDefinition": {
         "api_key": {
-            "type": "oauth2",
-            "flow": "application"
+            "type": "api_key"
         },
-        "stores_auth": {
+        "petstore_auth": {
             "type": "oauth2",
             "scopes": [
                 {
-                    "name": "read:store_v2",
+                    "name": "read:pets",
                     "description": "read your pets"
                 }
             ]
